@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "CHOKIDAR_USEPOLLING=true npm run server",
+    "dev": "npm run server",
     "prod": "npm run build && npm run server:prod",
     "build": "vite build && vite build --ssr",
     "server": "node ./server",
@@ -16,5 +16,10 @@
     "vite": "^2.8.4",
     "vite-plugin-ssr": "^0.3.59",
     "vue": "^3.2.31"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.8",
+    "tailwindcss": "^3.0.23"
   }
 }
