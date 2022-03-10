@@ -41,3 +41,12 @@ async function startServer() {
   app.listen(port)
   console.log(`Server running at http://localhost:${port}`)
 }
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBkVtzSZRDJy1WzQG6i_emBcoMMN8p5t_Q",
+  authDomain: "pokedex-281c5.firebaseapp.com",
+  projectId: "pokedex-281c5",
+  storageBucket: "pokedex-281c5.appspot.com",
+  messagingSenderId: "893239184341",
+  appId: "1:893239184341:web:15645292e905419d2b4b5c"
+};
