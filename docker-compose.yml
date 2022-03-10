@@ -1,37 +1,14 @@
 version: "3.7"
 
 services:
-  node-backend:
-    build: 
-      context: ./backend
+  server:
+    build:
+      context: .
       dockerfile: Dockerfile
     ports: 
      - "3000:3000"
-    tty: true
-    volumes:
-     - ./backend:/app
-    networks: 
-     - app-network
-    environment:
-     - NODE_ENV=development
-    command: npm run dev
-    
-  vue-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports: 
-     - "8080:8080"
     volumes: 
-     - ./frontend:/app
+      - "./app:/src/app"
     environment:
      - NODE_ENV=development
-    depends_on: 
-     - node-backend
     command: npm run dev
-
-volumes: 
-  app_db_volume:
-
-networks: 
-  app-network:
