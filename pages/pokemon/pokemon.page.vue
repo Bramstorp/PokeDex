@@ -1,6 +1,5 @@
 <template>
   <div class="container mx-auto pt-4">
-    <h1 class="text-center">Pokemons</h1>
       <PokemonSearch />
       <PokemonList :pokemonListData="pokemonListData"  />
   </div>
