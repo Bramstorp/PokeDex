@@ -13,7 +13,6 @@ Pokemon
 - special_attack
 - special_defense
 
-- evolve_id
 - abilities_id
 - types_id
 
