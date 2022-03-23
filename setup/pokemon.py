@@ -4,20 +4,11 @@ from db import execute_query, create_db_connection
 import base64
 import urllib.request
 
-pokemons = requests.get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1").json()
+pokemons = requests.get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151").json()
 
 data = {
     "pokemons" : []
 }
-
-def test():
-    pop_pokemon = f"""
-    INSERT INTO pokemon VALUES
-    ({id}, {pokemonData["height"]}, {pokemonData["weight"]}, {name}, {image}, {value[0]["base_stat"]}, {value[1]["base_stat"]}, {value[2]["base_stat"]}, {value[3]["base_stat"]}, {value[4]["base_stat"]}, {value[5]["base_stat"]}),
-    """
-
-    connection = create_db_connection("localhost", "root", "password", "db") 
-    execute_query(connection, pop_pokemon)
 
 def convertToBinaryData(filename):
     with open(filename, 'rb') as file:
