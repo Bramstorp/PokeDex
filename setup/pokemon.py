@@ -1,3 +1,4 @@
+import os
 import requests
 from db import execute_query, create_db_connection
 import base64
@@ -9,9 +10,19 @@ data = {
     "pokemons" : []
 }
 
-def get_as_base64(url):
-    data = base64.b64encode(requests.get(url).content).decode()
-    return data
+def test():
+    pop_pokemon = f"""
+    INSERT INTO pokemon VALUES
+    ({id}, {pokemonData["height"]}, {pokemonData["weight"]}, {name}, {image}, {value[0]["base_stat"]}, {value[1]["base_stat"]}, {value[2]["base_stat"]}, {value[3]["base_stat"]}, {value[4]["base_stat"]}, {value[5]["base_stat"]}),
+    """
+
+    connection = create_db_connection("localhost", "root", "password", "db") 
+    execute_query(connection, pop_pokemon)
+
+def convertToBinaryData(filename):
+    with open(filename, 'rb') as file:
+        binaryData = file.read()
+    return binaryData
 
 for pokemon in pokemons["results"]:
     name = pokemon["name"]
@@ -19,17 +30,23 @@ for pokemon in pokemons["results"]:
     pokemonData = requests.get(f"https://pokeapi.co/api/v2/pokemon/{id}/").json()
     value = [x for x in pokemonData["stats"]]
     imgURL = f'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png'
-    urllib.request.urlretrieve(imgURL, "../sprite/", f"{name}_sprite.png")
-
-    pop_pokemon = f"""
-    INSERT INTO pokemon VALUES
-    ({id},  {pokemonData["height"]}, {pokemonData["weight"]}, {name}, {img}, {value[0]["base_stat"]}, {value[1]["base_stat"]}, {value[2]["base_stat"]}, {value[3]["base_stat"]}, {value[4]["base_stat"]}, {value[5]["base_stat"]}),
-    """
-
-    connection = create_db_connection("localhost", "root", "password", "db") 
-    #execute_query(connection, pop_pokemon)
+    urllib.request.urlretrieve(imgURL,  f"../sprite/{name}_sprite.png")
     
+    connection = create_db_connection("localhost", "root", "password", "db")
+    cursor = connection.cursor()
+    sql_insert_blob_query = """ INSERT INTO pokemon
+                        (pokemon_id, height, weight, name, img, hp, attack, defense, speed, special_attack, special_defense) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                        """
 
+    empPicture = convertToBinaryData(f"../sprite/{name}_sprite.png")
+
+    insert_blob_tuple = (
+        id, pokemonData["height"], pokemonData["weight"], name, empPicture,
+        value[0]["base_stat"], value[1]["base_stat"], value[2]["base_stat"],
+        value[3]["base_stat"], value[4]["base_stat"], value[5]["base_stat"]
+    )
+    cursor.execute(sql_insert_blob_query, insert_blob_tuple)
+    connection.commit()
 
     """
     data["pokemons"].append({
